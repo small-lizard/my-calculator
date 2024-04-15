@@ -11,86 +11,75 @@
 
 body {
     display: flex;
-    justify-content: center; /* Выравниваем элементы по горизонтали по центру */
+    justify-content: center;
     align-items: center; 
-    background-color: #06266F;
+    background-color: rgb(235, 220, 200);
 }
 
-.container {
+.calculator {
     width: 30%;
-    padding-top: 50px;
+    margin-top: 20px;
+    background-color: rgb(235, 220, 200);
+    border-radius: 20px;
+    border: 4px solid #343436;
+    box-shadow: 10px 10px 0 -0.5px #343436;
+    overflow: hidden;
 }
 
-h1 {
-    font-size: 40px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    color: #DDE7FF;
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-input {
+.result {
     width: 100%;
-    height: 30px;
-    margin-bottom: 10px;
-    border-radius: 10px;
+    height: 100px;
+    border-radius: 20px;
     border: none;
-    padding: 7px 10px 5px 20px;
-    font-size: 16px;
+    font-size: 35px;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: normal;
+    color: #343436;
+    background-color: rgb(235, 220, 200);
+    padding: 20px 20px 10px 20px;
+    display: grid;
+    justify-items: end;
+    align-items: end; 
 }
 
-input placeholder {
+.result placeholder {
     color: #999;
 }
 
-
 .buttons_container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, calc(((100% - 45px) / 4) + 15px)) calc((100% - 45px) / 4);
+    width: 100%;
+    height: 100%;
+    background-color: rgb(128, 223, 199);
+    padding: 20px 20px 10px 20px;
+    border-radius: 20px 20px 0 0;
+    
 }
 
 .buttons_container button {
-    width: calc(25% - 5px);
-    height: 25px;
+    width: calc(100% - 15px);
+    height: 80px;
     margin: 0;
     border: none;
-    background-color: #DDE7FF;
+    background-color: rgb(235, 220, 200);
     border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.button_submit {
-    width: 100%;
-    height: 30px;
-    border-radius: 10px;
-    color: black;
-    font-size: 15px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    border: none;
     margin-bottom: 15px;
-} 
-
-h4 {
-    text-align: center;
-    font-size: 25px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    color: aliceblue;
+    border: none;
+    box-shadow: 5px 5px 0 -0.5px #343436;
+    border: 2px solid #343436;
+    cursor: pointer;
 }
 
-p {
-    text-align: center;
-    font-size: 22px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    color: aliceblue;
+.buttons_container button:active {
+    background: rgb(235, 220, 200);
+    box-shadow: none;
+    position: relative;
+    top: 5px;
+    left: 4px;
+}
+
+.buttons_container button:nth-child(4n) {
+   width: 100%;
 }

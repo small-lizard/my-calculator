@@ -9,44 +9,36 @@
       href="https://result.school/logo-result.school.png"
     />
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>01. JS Base</title>
+    <title>My calculator</title>
     <script src="app.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-    <!-- <script src="theory.js" defer></script> -->
   </head>
   <body>
-    <div class="container w-50 pt-5">
-      <h1>Калькулятор</h1>
-      <input
-        type="number"
-        class="form-control mb-2"
-        placeholder="Введите 1 число"
-        id="input1"
-        
-      />
-      <input
-        type="number"
-        class="form-control mb-2"
-        placeholder="Введите 2 число"
-        id="input2"
-        
-      />
-      <div class="buttons_container">
-        <button id="plus">+</button>
-        <button id="minus">-</button>
-        <button id="multiply">*</button>
-        <button id="divide">/</button>
-      </div>
-      <button class="button_submit btn-outline-info w-100 mb-2" id="submit">
-        Вычислить
-      </button>
-
-      <div class="result_text p-3 text-center">
-        <h4>Результат:</h4>
-        <p id="result" class="result">0</p>
-      </div>
+    <div class="calculator">
+        <div type="number" class="result" id="input">0</div>
+        <div class="buttons_container">
+            <button onclick="allClear(this)" id="AC">AC</button>
+            <button onclick="addSymbol(this.textContent)" id="bracket-left">(</button>
+            <button onclick="addSymbol(this.textContent)" id="bracket-right">)</button>
+            <button onclick="addSymbol(this.textContent)" id="divide">/</button>
+            <button onclick="addSymbol(this.textContent)" id="number">7</button>
+            <button onclick="addSymbol(this.textContent)" id="number">8</button>
+            <button onclick="addSymbol(this.textContent)" id="number">9</button>
+            <button onclick="addSymbol(this.textContent)" id="multiply">x</button>
+            <button onclick="addSymbol(this.textContent)" id="number">4</button>
+            <button onclick="addSymbol(this.textContent)" id="number">5</button>
+            <button onclick="addSymbol(this.textContent)" id="number">6</button>
+            <button onclick="addSymbol(this.textContent)" id="minus">-</button>
+            <button onclick="addSymbol(this.textContent)" id="number">1</button>
+            <button onclick="addSymbol(this.textContent)" id="number">2</button>
+            <button onclick="addSymbol(this.textContent)" id="number">3</button>
+            <button onclick="addSymbol(this.textContent)" id="plus">+</button>
+            <button onclick="addSymbol(this.textContent)" id="dot">.</button>
+            <button onclick="addSymbol(this.textContent)" id="number">0</button>
+            <button onclick="calculate()" id="equals">=</button>
+            <button onclick="deleteSymbol()" id="delete"><=</button>
+        </div>
     </div>
   </body>
-</html>
