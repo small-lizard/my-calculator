@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://result.school/logo-result.school.png"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>01. JS Base</title>
+    <script src="app.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <!-- <script src="theory.js" defer></script> -->
+  </head>
+  <body>
+    <div class="container w-50 pt-5">
+      <h1>Калькулятор</h1>
+      <input
+        type="number"
+        class="form-control mb-2"
+        placeholder="Введите 1 число"
+        id="input1"
+        
+      />
+      <input
+        type="number"
+        class="form-control mb-2"
+        placeholder="Введите 2 число"
+        id="input2"
+        
+      />
+      <div class="buttons_container">
+        <button id="plus">+</button>
+        <button id="minus">-</button>
+        <button id="multiply">*</button>
+        <button id="divide">/</button>
+      </div>
+      <button class="button_submit btn-outline-info w-100 mb-2" id="submit">
+        Вычислить
+      </button>
+
+      <div class="result_text p-3 text-center">
+        <h4>Результат:</h4>
+        <p id="result" class="result">0</p>
+      </div>
+    </div>
+  </body>
+</html>
