@@ -20,17 +20,19 @@ function handleDeletedSymbol() {
     const lastSymbol = getTextContent()[getTextContent().length - 1];
     if (getTextContent().length > 0 && bracketLeft === lastSymbol) {
         allBracketsLeft--;
+
         return getTextContent().slice(0, -1);
     }
     if (getTextContent().length > 1 && bracketRight === lastSymbol) {
         allBracketsRight--;
+
         return getTextContent().slice(0, -1);
     }
     if (getTextContent().length > 1 && bracketRight !== lastSymbol && bracketLeft !== lastSymbol) {
         return getTextContent().slice(0, -1);
     }
 
-    return "0";
+    return '0';
 }
 
 function handleAddedSymbol(symbol) {
@@ -46,6 +48,9 @@ function handleAddedSymbol(symbol) {
         isResult = false;
 
         return getTextContent().slice(0, -1) + symbol;
+    }
+    if (bracketLeft === lastSymbol && '-' === symbol) {
+        return getTextContent() + symbol;
     }
     if ((dot === lastSymbol || bracketLeft === lastSymbol) && action.includes(symbol)) {
         isResult = false;
@@ -64,7 +69,7 @@ function handleAddedSymbol(symbol) {
     }
     if (bracketRight === symbol && (action.includes(lastSymbol) || dot === lastSymbol || bracketLeft === lastSymbol || !(allBracketsLeft > allBracketsRight))) {
         isResult = false;
-        console.log(action.includes(lastSymbol), dot === lastSymbol, bracketLeft === lastSymbol, !(allBracketsLeft > allBracketsRight))
+
         return getTextContent();
     }
     if (bracketLeft === symbol) {
@@ -73,8 +78,9 @@ function handleAddedSymbol(symbol) {
     if (bracketRight === symbol) {
         allBracketsRight++;
     }
-    if ((isSymbolZero && isSymbolNotAction && isSymbolNotDot) || (isResult && isSymbolNotAction && isSymbolNotDot)) {
+    if ((isSymbolZero && (numbers.includes(symbol) || '-' === symbol || bracketLeft === symbol)) || (isResult && isSymbolNotAction && isSymbolNotDot)) {
         isResult = false;
+
         return symbol;
     }
     if (bracketRight === lastSymbol && numbers.includes(symbol)) {
@@ -133,6 +139,7 @@ function checkActionPriority(symbol) {
     if ('x' === symbol || '/' === symbol) {
         return 2;
     }
+
     return 0;
 }
 
@@ -140,8 +147,10 @@ function calculate() {
     const numbersStack = new Stack();
     const actionsStack = new Stack();
     const symbols = getTextContent().split('');
-    const numbersArray = symbols.map(function (symbol) {
-        if ([...action, bracketLeft, bracketRight].includes(symbol)) {
+    const numbersArray = symbols.map(function (symbol, index) {
+        const isNegativeNumer = (index === 0 || symbols[index - 1] === bracketLeft) && '-' === symbol;
+
+        if ([...action, bracketLeft, bracketRight].includes(symbol) && !isNegativeNumer) {
             return ` ${symbol} `;
         }
 
@@ -201,6 +210,7 @@ function result(numbersStack,actionsStack) {
     while(actionsStack.getLength() !== 0) {
         countStack(numbersStack,actionsStack);
     }
+    
     const result = numbersStack.getElement();
     setTextContent(validedResult(result));
 }
