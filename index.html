@@ -4,20 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="shortcut icon"
-      href="https://result.school/logo-result.school.png"
-    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>My calculator</title>
+    <title>Calculator</title>
     <script src="app.js" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="calculator">
-        <div type="number" class="result" id="input">0</div>
+        <div class="name"> 
+          <span>Calculator</span>
+          <img src="./assets/images/star.svg" alt="star">
+        </div>
+        <div class="result" id="result">
+          <span id="input">0</span>
+        </div>
         <div class="buttons_container">
             <button onclick="allClear(this)" id="AC">AC</button>
             <button onclick="addSymbol(this.textContent)" id="bracket-left">(</button>
@@ -38,7 +38,9 @@
             <button onclick="addSymbol(this.textContent)" id="dot">.</button>
             <button onclick="addSymbol(this.textContent)" id="number">0</button>
             <button onclick="calculate()" id="equals">=</button>
-            <button onclick="deleteSymbol()" id="delete"><=</button>
+            <button onclick="deleteSymbol()" id="delete">
+            <img src="./assets/images/delete.svg" alt="<=">
+            </button>
         </div>
     </div>
   </body>

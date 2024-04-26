@@ -4,16 +4,33 @@ const bracketLeft = '(';
 const bracketRight = ')';
 const action = ['+', '-', '/', 'x',];
 const input = document.getElementById('input');
+const resultField = document.getElementById('result');
 let isResult = false;
 let allBracketsLeft = 0;
 let allBracketsRight = 0;
 
+function reduceFontSize() {
+    const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
+    if (input.offsetWidth >= getMaxWidthInput()) {
+        input.style.fontSize = currentFontSize - 4 + 'px';
+    }
+}
+
+function enlargeFontSize() {
+    const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
+    if (input.offsetWidth < getMaxWidthInput() && input.style.fontSize != '64px') {
+        input.style.fontSize = currentFontSize + 4 + 'px';
+    }
+}
+
 function addSymbol(symbol) {
     setTextContent(handleAddedSymbol(symbol));
+    reduceFontSize();
 }
 
 function deleteSymbol(symbol) {
     setTextContent(handleDeletedSymbol(symbol));
+    enlargeFontSize();
 }
 
 function handleDeletedSymbol() {
@@ -40,6 +57,7 @@ function handleAddedSymbol(symbol) {
     const isSymbolZero = getTextContent() === '0';
     const isSymbolNotAction = !action.includes(symbol);
     const isSymbolNotDot = symbol !== '.';
+    const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
 
     if (checkDots(symbol)) {
         return getTextContent();
@@ -80,7 +98,7 @@ function handleAddedSymbol(symbol) {
     }
     if ((isSymbolZero && (numbers.includes(symbol) || '-' === symbol || bracketLeft === symbol)) || (isResult && isSymbolNotAction && isSymbolNotDot)) {
         isResult = false;
-
+        input.style.fontSize = '64px';
         return symbol;
     }
     if (bracketRight === lastSymbol && numbers.includes(symbol)) {
@@ -113,6 +131,7 @@ function checkDots(symbol) {
 
 function allClear() {
     setTextContent(0);
+    input.style.fontSize = '64px';
 }
 
 function validedResult(result) {
@@ -130,6 +149,10 @@ function getTextContent() {
 
 function setTextContent(string) {
     input.textContent = string;
+}
+
+function getMaxWidthInput() {
+    return resultField.offsetWidth - 80;
 }
 
 function checkActionPriority(symbol) {
@@ -171,9 +194,9 @@ function calculate() {
         }
         else if (isNotNumbers && (actionsStack.getLength() === 0 || isbracketLeft || isPriorityCheck)) {
             actionsStack.addElement(symbol);
-        } 
+        }
         else if (bracketRight === symbol) {
-            while(actionsStack.getLastElement() !== bracketLeft) {
+            while (actionsStack.getLastElement() !== bracketLeft) {
                 countStack(numbersStack, actionsStack);
             }
             actionsStack.getElement();
@@ -183,7 +206,8 @@ function calculate() {
             actionsStack.addElement(symbol);
         }
     })
-    result(numbersStack,actionsStack);
+    result(numbersStack, actionsStack);
+    resizingResult();
     isResult = true;
 }
 
@@ -206,13 +230,25 @@ function countStack(numbersStack, actionsStack) {
     }
 }
 
-function result(numbersStack,actionsStack) {
-    while(actionsStack.getLength() !== 0) {
-        countStack(numbersStack,actionsStack);
+function result(numbersStack, actionsStack) {
+    while (actionsStack.getLength() !== 0) {
+        countStack(numbersStack, actionsStack);
     }
-    
+
     const result = numbersStack.getElement();
     setTextContent(validedResult(result));
+}
+
+function resizingResult() {
+    input.style.fontSize = '64px';
+
+    if (input.offsetWidth < getMaxWidthInput()) {
+        input.style.fontSize = '64px';
+    }
+    while (input.offsetWidth > getMaxWidthInput()) {
+        const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
+        input.style.fontSize = currentFontSize - 1 + 'px';
+    }
 }
 class Stack {
     array = [];
