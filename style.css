@@ -52,18 +52,35 @@ body {
     height: 32px;
 }
 
+.result_container {
+    padding: 52px 30px 30px 40px;
+    position: relative;
+}
+
 .result {
     width: 100%;
-    height: 200px;
-    border-radius: 25px;
+    height: 108px;
+    padding-right: 10px;
+    padding-bottom: 10px;
     border: none;
     font-size: 64px;
-    padding: 52px 40px 40px 40px;
     display: flex;
+    color: #343436;
     justify-content: flex-end;
     align-items: flex-end;
     line-height: 50%;
     white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8%;
+    height: 100%;
+    background-image: linear-gradient(to left, transparent, #FFF5E8);
 }
 
 .buttons_container {
