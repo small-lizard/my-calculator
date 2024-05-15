@@ -10,22 +10,32 @@ let allBracketsLeft = 0;
 let allBracketsRight = 0;
 
 function reduceFontSize() {
-    const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
-    if (input.offsetWidth >= getMaxWidthInput()) {
+    while (input.offsetWidth >= getMaxWidthInput()) {
+        const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
         input.style.fontSize = currentFontSize - 4 + 'px';
+    }
+}
+
+function limitFontReduction() {
+    const minFontSize = 36;
+    const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
+
+    if(currentFontSize >= minFontSize) {
+        reduceFontSize();
     }
 }
 
 function enlargeFontSize() {
     const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
-    if (input.offsetWidth < getMaxWidthInput() && input.style.fontSize != '64px') {
+    
+    if (input.offsetWidth < getMaxWidthInput() && input.style.fontSize < '64px') {
         input.style.fontSize = currentFontSize + 4 + 'px';
     }
 }
 
 function addSymbol(symbol) {
     setTextContent(handleAddedSymbol(symbol));
-    reduceFontSize();
+    limitFontReduction();
 }
 
 function deleteSymbol(symbol) {
@@ -52,14 +62,15 @@ function handleDeletedSymbol() {
     return '0';
 }
 
+
 function handleAddedSymbol(symbol) {
     const lastSymbol = getTextContent()[getTextContent().length - 1];
     const isSymbolZero = getTextContent() === '0';
     const isSymbolNotAction = !action.includes(symbol);
     const isSymbolNotDot = symbol !== '.';
-    const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
 
     if (checkDots(symbol)) {
+
         return getTextContent();
     }
     if (action.includes(lastSymbol) && action.includes(symbol)) {
@@ -99,10 +110,15 @@ function handleAddedSymbol(symbol) {
     if ((isSymbolZero && (numbers.includes(symbol) || '-' === symbol || bracketLeft === symbol)) || (isResult && isSymbolNotAction && isSymbolNotDot)) {
         isResult = false;
         input.style.fontSize = '64px';
+
         return symbol;
     }
     if (bracketRight === lastSymbol && numbers.includes(symbol)) {
+
         return getTextContent();
+    }
+    if(numbers.includes(symbol) && '0' == lastSymbol && action.includes(getTextContent()[getTextContent().length - 2])) {
+        return getTextContent().slice(0, -1) + symbol;
     }
     isResult = false;
 
@@ -131,15 +147,26 @@ function checkDots(symbol) {
 
 function allClear() {
     setTextContent(0);
+    allBracketsLeft = 0;
     input.style.fontSize = '64px';
 }
 
 function validedResult(result) {
-    if (result === Math.floor(result)) {
-        return result.toFixed(0);
+    const resultToNumber = Number(result);
+
+    console.log(resultToNumber)
+    
+    if (Number.isInteger(resultToNumber) == true) {
+        debugger
+        return resultToNumber.toFixed(0);
+    }
+    if (Number.isInteger(resultToNumber.toFixed(1) * 1) == true) {
+        debugger
+        return resultToNumber.toFixed(0);
     }
     else {
-        return result.toFixed(1);
+        debugger
+        return resultToNumber.toFixed(1);
     }
 }
 
@@ -152,7 +179,7 @@ function setTextContent(string) {
 }
 
 function getMaxWidthInput() {
-    return resultField.offsetWidth - 80;
+    return resultField.offsetWidth - 10;
 }
 
 function checkActionPriority(symbol) {
@@ -206,6 +233,7 @@ function calculate() {
             actionsStack.addElement(symbol);
         }
     })
+    
     result(numbersStack, actionsStack);
     resizingResult();
     isResult = true;
