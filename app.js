@@ -16,6 +16,7 @@ function reduceFontSize() {
     }
 }
 
+
 function limitFontReduction() {
     const minFontSize = 36;
     const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
@@ -31,6 +32,26 @@ function enlargeFontSize() {
     if (input.offsetWidth < getMaxWidthInput() && input.style.fontSize < '64px') {
         input.style.fontSize = currentFontSize + 4 + 'px';
     }
+}
+
+function inputError() {
+    input.animate([
+        {
+            transform: 'scale(1)',
+            color: '#343436',
+        },
+        {
+            transform: 'scale(1.1)',
+            color: '#eb4034',
+        },
+        {
+            transform: 'scale(1)',
+            color: '#343436',
+        },
+      ], {
+        duration: 180,
+        easing: 'ease-out',
+      });
 }
 
 function addSymbol(symbol) {
@@ -70,7 +91,7 @@ function handleAddedSymbol(symbol) {
     const isSymbolNotDot = symbol !== '.';
 
     if (checkDots(symbol)) {
-
+        inputError();
         return getTextContent();
     }
     if (action.includes(lastSymbol) && action.includes(symbol)) {
@@ -83,21 +104,25 @@ function handleAddedSymbol(symbol) {
     }
     if ((dot === lastSymbol || bracketLeft === lastSymbol) && action.includes(symbol)) {
         isResult = false;
+        inputError();
 
         return getTextContent();
     }
     if (!numbers.includes(lastSymbol) && dot === symbol) {
         isResult = false;
+        inputError();
 
         return getTextContent();
     }
     if (bracketLeft === symbol && (numbers.includes(lastSymbol) || dot === lastSymbol || bracketRight === lastSymbol) && !isSymbolZero) {
         isResult = false;
+        inputError();
 
         return getTextContent();
     }
     if (bracketRight === symbol && (action.includes(lastSymbol) || dot === lastSymbol || bracketLeft === lastSymbol || !(allBracketsLeft > allBracketsRight))) {
         isResult = false;
+        inputError();
 
         return getTextContent();
     }
@@ -114,7 +139,8 @@ function handleAddedSymbol(symbol) {
         return symbol;
     }
     if (bracketRight === lastSymbol && numbers.includes(symbol)) {
-
+        inputError();
+        
         return getTextContent();
     }
     if(numbers.includes(symbol) && '0' == lastSymbol && action.includes(getTextContent()[getTextContent().length - 2])) {
@@ -153,20 +179,12 @@ function allClear() {
 
 function validedResult(result) {
     const resultToNumber = Number(result);
-
-    console.log(resultToNumber)
     
     if (Number.isInteger(resultToNumber) == true) {
-        debugger
-        return resultToNumber.toFixed(0);
-    }
-    if (Number.isInteger(resultToNumber.toFixed(1) * 1) == true) {
-        debugger
         return resultToNumber.toFixed(0);
     }
     else {
-        debugger
-        return resultToNumber.toFixed(1);
+        return parseFloat(resultToNumber.toFixed(6));
     }
 }
 
