@@ -5,17 +5,18 @@ const bracketRight = ')';
 const action = ['+', '-', '/', 'x',];
 const input = document.getElementById('input');
 const resultField = document.getElementById('result');
+const inactiveBracket = document.getElementById('inactive_bracket');
 let isResult = false;
 let allBracketsLeft = 0;
 let allBracketsRight = 0;
 
 function reduceFontSize() {
-    while (input.offsetWidth >= getMaxWidthInput()) {
+    while ((input.offsetWidth + inactiveBracket.offsetWidth) >= getMaxWidthInput()) {
         const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
         input.style.fontSize = currentFontSize - 4 + 'px';
+        inactiveBracket.style.fontSize = input.style.fontSize;
     }
 }
-
 
 function limitFontReduction() {
     const minFontSize = 36;
@@ -29,8 +30,9 @@ function limitFontReduction() {
 function enlargeFontSize() {
     const currentFontSize = parseInt(window.getComputedStyle(input).fontSize);
     
-    if (input.offsetWidth < getMaxWidthInput() && input.style.fontSize < '64px') {
+    if ((input.offsetWidth + inactiveBracket.offsetWidth) < getMaxWidthInput() && input.style.fontSize < '64px') {
         input.style.fontSize = currentFontSize + 4 + 'px';
+        inactiveBracket.style.fontSize = input.style.fontSize;
     }
 }
 
@@ -68,21 +70,27 @@ function handleDeletedSymbol() {
     const lastSymbol = getTextContent()[getTextContent().length - 1];
     if (getTextContent().length > 0 && bracketLeft === lastSymbol) {
         allBracketsLeft--;
+        inactiveBracket.textContent = bracketRight.repeat(allBracketsLeft);
+
+        if (allBracketsLeft === 0  && getTextContent().length === 1) {
+            return '0';
+        }
 
         return getTextContent().slice(0, -1);
     }
     if (getTextContent().length > 1 && bracketRight === lastSymbol) {
         allBracketsRight--;
-
+        inactiveBracket.textContent = bracketRight.repeat(allBracketsLeft - allBracketsRight);
+        console.log(allBracketsLeft - allBracketsRight)
         return getTextContent().slice(0, -1);
     }
     if (getTextContent().length > 1 && bracketRight !== lastSymbol && bracketLeft !== lastSymbol) {
+
         return getTextContent().slice(0, -1);
     }
-
+    
     return '0';
 }
-
 
 function handleAddedSymbol(symbol) {
     const lastSymbol = getTextContent()[getTextContent().length - 1];
@@ -128,9 +136,11 @@ function handleAddedSymbol(symbol) {
     }
     if (bracketLeft === symbol) {
         allBracketsLeft++;
+        inactiveBracket.textContent = bracketRight.repeat(allBracketsLeft - allBracketsRight);
     }
     if (bracketRight === symbol) {
         allBracketsRight++;
+        inactiveBracket.textContent = bracketRight.repeat(allBracketsLeft - allBracketsRight);
     }
     if ((isSymbolZero && (numbers.includes(symbol) || '-' === symbol || bracketLeft === symbol)) || (isResult && isSymbolNotAction && isSymbolNotDot)) {
         isResult = false;
@@ -143,9 +153,10 @@ function handleAddedSymbol(symbol) {
         
         return getTextContent();
     }
-    if(numbers.includes(symbol) && '0' == lastSymbol && action.includes(getTextContent()[getTextContent().length - 2])) {
+    if (numbers.includes(symbol) && '0' == lastSymbol && action.includes(getTextContent()[getTextContent().length - 2])) {
         return getTextContent().slice(0, -1) + symbol;
     }
+    
     isResult = false;
 
     return getTextContent() + symbol;
@@ -174,12 +185,15 @@ function checkDots(symbol) {
 function allClear() {
     setTextContent(0);
     allBracketsLeft = 0;
+    inactiveBracket.textContent = '';
+    allBracketsRight = 0;
     input.style.fontSize = '64px';
+    inactiveBracket.style.fontSize = '64px';
 }
 
 function validedResult(result) {
     const resultToNumber = Number(result);
-    
+
     if (Number.isInteger(resultToNumber) == true) {
         return resultToNumber.toFixed(0);
     }
@@ -197,7 +211,7 @@ function setTextContent(string) {
 }
 
 function getMaxWidthInput() {
-    return resultField.offsetWidth - 10;
+    return resultField.offsetWidth - 20;
 }
 
 function checkActionPriority(symbol) {
@@ -211,10 +225,22 @@ function checkActionPriority(symbol) {
     return 0;
 }
 
+function getBalancedExpression() {
+    if (allBracketsLeft > allBracketsRight) {
+        const inactiveBracketsNumber = allBracketsLeft - allBracketsRight;
+        inactiveBracket.textContent = '';
+        allBracketsLeft = 0;
+
+        return getTextContent() + bracketRight.repeat(inactiveBracketsNumber);
+    }
+
+    return getTextContent();
+}
+
 function calculate() {
     const numbersStack = new Stack();
     const actionsStack = new Stack();
-    const symbols = getTextContent().split('');
+    const symbols = getBalancedExpression().split('');
     const numbersArray = symbols.map(function (symbol, index) {
         const isNegativeNumer = (index === 0 || symbols[index - 1] === bracketLeft) && '-' === symbol;
 
@@ -281,7 +307,8 @@ function result(numbersStack, actionsStack) {
         countStack(numbersStack, actionsStack);
     }
 
-    const result = numbersStack.getElement();
+    let result = numbersStack.getElement();
+
     setTextContent(validedResult(result));
 }
 

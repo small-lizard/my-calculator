@@ -59,7 +59,7 @@ body {
 
 .result {
     width: 100%;
-    height: 108px;
+    height: 110px;
     padding-right: 10px;
     padding-bottom: 10px;
     border: none;
@@ -72,6 +72,10 @@ body {
     white-space: nowrap;
     overflow: hidden;
     position: relative;
+}
+
+.result #inactive_bracket {
+    color: #d3c2b0;
 }
 
 .overlay {
@@ -127,9 +131,6 @@ body {
    width: 100%;
 }
 
-
-
-
 @media screen and (max-height: 870px) {
     .calculator {
         width: 356px;
@@ -137,19 +138,26 @@ body {
         margin-top: 20px;
         border: 3px solid #343436;
     }
+
     .name {
         height: 40px;
         padding-top: 20px;
     }
-    .result {
-        height: 150px;
-        padding: 52px 35px 35px 35px;
+
+    .result_container {
+        padding: 52px 25px 25px 35px;
     }
+
+    .result {
+        height: 73px;
+    }
+
     .buttons_container {
         height: calc(100% - 190px);
         padding: 20px 25px 10px 20px;
         grid-template-columns: repeat(3, calc(((100% - 30px) / 4) + 10px)) calc((100% - 30px) / 4);
     }
+
     .buttons_container button {
         width: calc(100% - 10px);
         height: calc(100% - 10px);
@@ -157,7 +165,6 @@ body {
         border: 2px solid #343436;
     }
 }
-
 
 @media screen and (max-width: 480px) {
     .calculator {
@@ -169,22 +176,25 @@ body {
         box-shadow: none;
         overflow: hidden;
     }
+
     .name {
         height: 60px;
         padding-top: 40px;
     }
+
     .result {
         width: 100%;
-        height: 230px;
+        height: 163px;
         border-radius: 0;
         border: none;
-        font-size: 64px;
     }
+
     .buttons_container {
         height: calc(100% - 290px);
         padding: 21px 21px 21px 21px;
         border-radius: 20px 20px 0 0;
     }
+
     .buttons_container button {
         border-radius: 10px;
     }
