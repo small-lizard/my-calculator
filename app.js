@@ -75,16 +75,12 @@ function handleDeletedSymbol() {
         if (allBracketsLeft === 0  && getTextContent().length === 1) {
             return '0';
         }
-
-        return getTextContent().slice(0, -1);
     }
     if (getTextContent().length > 1 && bracketRight === lastSymbol) {
         allBracketsRight--;
         inactiveBracket.textContent = bracketRight.repeat(allBracketsLeft - allBracketsRight);
-        console.log(allBracketsLeft - allBracketsRight)
-        return getTextContent().slice(0, -1);
     }
-    if (getTextContent().length > 1 && bracketRight !== lastSymbol && bracketLeft !== lastSymbol) {
+    if (getTextContent().length > 1 && getTextContent() !== 'Error') {
 
         return getTextContent().slice(0, -1);
     }
@@ -193,6 +189,10 @@ function allClear() {
 
 function validedResult(result) {
     const resultToNumber = Number(result);
+
+    if (isNaN(result) || result === Infinity) {
+        return result = 'Error';
+    }
 
     if (Number.isInteger(resultToNumber) == true) {
         return resultToNumber.toFixed(0);
